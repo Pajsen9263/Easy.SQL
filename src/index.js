@@ -1,12 +1,10 @@
 module.exports = function(file) {
 // Require Database
-    const Database = require("better-sqlite3");
+    const db = require('sql-easy-builder');
     const util = require("util");
-    let db;
 
     // Create Database Under Conditions
-    if (!db) db = new Database(file || "./json.sqlite");
-
+    
     // Declare Methods
     var methods = {
         fetch: require("./methods/fetch.js"),
@@ -369,7 +367,7 @@ module.exports = function(file) {
         };
 
         // Access Database
-        db.prepare(
+        db.query(
             `CREATE TABLE IF NOT EXISTS ${options.table} (ID TEXT, json TEXT)`
         ).run();
 
