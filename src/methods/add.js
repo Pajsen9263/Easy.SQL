@@ -6,6 +6,7 @@ module.exports = function(db, params, options) {
   
   // Fetch entry
   let fetched = db.query(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id);
+  let fetched = db.select()
   
   // If not found, create empty row
   if (!fetched) {
