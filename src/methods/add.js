@@ -5,12 +5,12 @@ const set = require('lodash/set');
 module.exports = function(db, params, options) {
   
   // Fetch entry
-  let fetched = db.query(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id);
-  let fetched = db.select()
+  let fetched = db.select().from(options.table).where({id: "?"}).get(params.id)
   
   // If not found, create empty row
   if (!fetched) {
     db.query(`INSERT INTO ${options.table} (ID,json) VALUES (?,?)`).run(params.id, '{}');
+    db.insert(`${options.table}`, { id: '', age: 30, created_at: b.func('NOW') })
     fetched = db.query(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id); 
   }
 
