@@ -1,6 +1,7 @@
 module.exports = function(file) {
 // Require Database
-    const db = require('sql-easy-builder');
+    const Database = require('sql-easy-builder');
+    const db = new Database.Builder();
     const util = require("util");
 
     // Create Database Under Conditions
