@@ -5,12 +5,12 @@ const set = require('lodash/set');
 module.exports = function(db, params, options) {
   
   // Fetch entry
-  let fetched = db.prepare(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id);
+  let fetched = db.query(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id);
   
   // If not found, create empty row
   if (!fetched) {
-    db.prepare(`INSERT INTO ${options.table} (ID,json) VALUES (?,?)`).run(params.id, '{}');
-    fetched = db.prepare(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id); 
+    db.query(`INSERT INTO ${options.table} (ID,json) VALUES (?,?)`).run(params.id, '{}');
+    fetched = db.query(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id); 
   }
 
   // Check if a target was supplied
@@ -31,10 +31,10 @@ module.exports = function(db, params, options) {
   params.data = JSON.stringify(params.data);
 
   // Update entry with new data
-  db.prepare(`UPDATE ${options.table} SET json = (?) WHERE ID = (?)`).run(params.data, params.id);
+  db.query(`UPDATE ${options.table} SET json = (?) WHERE ID = (?)`).run(params.data, params.id);
   
   // Fetch & return new data
-  let newData = db.prepare(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id).json;
+  let newData = db.query(`SELECT * FROM ${options.table} WHERE ID = (?)`).get(params.id).json;
   if (newData === '{}') return null;
   else {
     newData = JSON.parse(newData)
